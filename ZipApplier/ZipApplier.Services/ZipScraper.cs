@@ -7,13 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
+using ZipApplier.Services.Requests;
 
-namespace ZipApplier.ConsoleApp
+namespace ZipApplier.Services
 {
-    public class Program
+    public class ZipScraper
     {
-        static void Main(string[] args)
+        public List<Job> Scrape()
         {
             string url = "https://www.ziprecruiter.com/candidate/search?search=.Net+Developer&location=Los+Angeles%2C+CA&days=10&radius=25&refine_by_salary=&refine_by_tags=&refine_by_title=&refine_by_org_name=";
 
@@ -21,13 +21,13 @@ namespace ZipApplier.ConsoleApp
             options.AddArgument("--headless");
             options.AddArgument("--incognito");
             options.AddArgument("--ignore-certificate-errors");
-            IWebDriver chromeDriver = new ChromeDriver(options);
+            IWebDriver chromeDriver = new ChromeDriver("C:\\repos\\github\\ZipApplier\\ZipApplier\\ZipApplier.Services\\bin\\Release", options);
             chromeDriver.Url = url;
             var html = chromeDriver.PageSource;
             var parser = new HtmlParser();
             var doc = parser.Parse(html);
 
-            //List<Job> jobs = new List<Job>();
+            List<Job> jobs = new List<Job>();
             captureListings(doc);
 
             //Below finds the total number of listings returned by the search.
@@ -41,16 +41,16 @@ namespace ZipApplier.ConsoleApp
             //ZipRecruiter lists 20 job postings on each page. 
             //Below will determine how many pages need to be checked to work around pagination. 
             int pages = 1;
-            int extraPage = 0; 
-            if(total > 20)
+            int extraPage = 0;
+            if (total > 20)
                 pages = (int)Math.Floor((decimal)(total / 20));
-            if(total % 20 != 0)
+            if (total % 20 != 0)
             {
                 extraPage = 1;
             }
             pages += extraPage;
-            
-            if(pages > 1)
+
+            if (pages > 1)
             {
                 for (int p = 2; p <= pages; p++)
                 {
@@ -95,50 +95,38 @@ namespace ZipApplier.ConsoleApp
                         && !title.Contains("Salesforce")
                         && !title.Contains("SENIOR")
                         && !title.Contains("Analyst")
-                        && title.Contains(".NET") //this needs to be changed with each search
+                        && title.Contains(".NET") //this needs to be changed with each unique search
                         )
                     {
-                        string button = "";
+                        Job job = new Job();
+                        string jobId = "";
+                        jobId = listing.QuerySelector("article").GetAttribute("id");
+                        job.JobId = jobId;
+                        job.Title = title;
+                        job.Company = listing.QuerySelector(".t_org_link").TextContent;
+                        job.Location = listing.QuerySelector(".t_location_link").TextContent;
+                        job.Description = listing.QuerySelector(".job_snippet").TextContent;
                         if (listing.QuerySelector("button").HasAttribute("data-oneclick"))
                         {
-                            button = listing.QuerySelector("button").GetAttribute("data-href");
-                            var options2 = new ChromeOptions();
-                            options2.AddArgument("--headless");
-                            options2.AddArgument("--incognito");
-                            options2.AddArgument("--ignore-certificate-errors");
-                            var chromeDriver2 = new ChromeDriver(options);
-                            chromeDriver2.Url = button;
-                            var html2 = chromeDriver2.PageSource;
-                            var parser2 = new HtmlParser();
-                            var doc2 = parser.Parse(html2);
-                            Console.Write(doc2.Context);
-                            Console.WriteLine("Applied to: " + title);
-
-
+                            job.Url = listing.QuerySelector("button").GetAttribute("data-href");
+                            job.QuickApply = true;
                         }
                         else
                         {
-                            Console.WriteLine(title);
+                            string  attr = listing.QuerySelector("a.t_job_link").GetAttribute("href");
+                            string link = attr.Split('?')[0];
+                            job.Url = link;
+                            job.QuickApply = false;
                         }
-                        
-                        
-                        //Job job = new Job();
-                        //job.Title = title;
-                        //job.Company = listing.QuerySelector(".t_org_link").TextContent;
-                        //job.Location = listing.QuerySelector(".t_location_link").TextContent;
-                        //job.Description = listing.QuerySelector(".job_snippet").TextContent;
-
+                        jobs.Add(job);
+   
 
                     }
-            }
-            
-                
-                // get URL
-                //XmlDocument xml = new XmlDocument();
-               
+                }
 
             }
 
+            return jobs;
         }
     }
 }
