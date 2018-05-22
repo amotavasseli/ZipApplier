@@ -58,7 +58,7 @@ namespace ZipApplier.Services
                     options.AddArgument("--headless");
                     options.AddArgument("--incognito");
                     options.AddArgument("--ignore-certificate-errors");
-                    chromeDriver = new ChromeDriver(options);
+                    chromeDriver = new ChromeDriver("C:\\repos\\github\\ZipApplier\\ZipApplier\\ZipApplier.Services\\bin\\Release", options);
                     chromeDriver.Url = url + "&page=" + p;
                     html = chromeDriver.PageSource;
                     parser = new HtmlParser();
@@ -72,7 +72,7 @@ namespace ZipApplier.Services
                 for (int i = 0; i < listings.Length; i++)
                 {
                     var listing = listings[i];
-                    var title = listing.QuerySelector("h2.job_title").TextContent;
+                    var title = listing.QuerySelector("span.just_job_title").TextContent;
                     if (!title.Contains("Senior")
                         && !title.Contains("Sr")
                         && !title.Contains("Lead")
@@ -94,14 +94,13 @@ namespace ZipApplier.Services
                         && !title.Contains("CSS")
                         && !title.Contains("Salesforce")
                         && !title.Contains("SENIOR")
-                        && !title.Contains("Analyst")
-                        && title.Contains(".NET") //this needs to be changed with each unique search
+                        && !title.Contains("Analyst") 
+                        // TODO: Setup to ignore case sensitivity 
+                        //this needs to be changed with each unique search
                         )
                     {
                         Job job = new Job();
-                        string jobId = "";
-                        jobId = listing.QuerySelector("article").GetAttribute("id");
-                        job.JobId = jobId;
+                        job.JobId = listing.QuerySelector("span.just_job_title").GetAttribute("data-job-id");
                         job.Title = title;
                         job.Company = listing.QuerySelector(".t_org_link").TextContent;
                         job.Location = listing.QuerySelector(".t_location_link").TextContent;

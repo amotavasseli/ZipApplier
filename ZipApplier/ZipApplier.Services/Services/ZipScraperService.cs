@@ -28,13 +28,14 @@ namespace ZipApplier.Services.Services
                     try
                     {
                         //Post new job into the database
-                        SqlCommand cmd = new SqlWrapper().Wrapper("Jobs_insert", con);
+                        SqlCommand cmd = new SqlWrapper().Wrapper("ZipApplier_insert", con);
                         cmd.Parameters.AddWithValue("@job_id", job.JobId);
                         cmd.Parameters.AddWithValue("@title", job.Title);
                         cmd.Parameters.AddWithValue("@url", job.Url);
                         cmd.Parameters.AddWithValue("@company", job.Company);
                         cmd.Parameters.AddWithValue("@description", job.Description);
                         cmd.Parameters.AddWithValue("@location", job.Location);
+                        cmd.Parameters.AddWithValue("@quick_apply", job.QuickApply);
                         cmd.Parameters.Add("@id", SqlDbType.Int).Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                     } catch(SqlException exp) when (exp.Number == 2601)

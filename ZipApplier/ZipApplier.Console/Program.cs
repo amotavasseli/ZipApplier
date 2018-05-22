@@ -98,30 +98,9 @@ namespace ZipApplier.ConsoleApp
                         && title.Contains(".NET") //this needs to be changed with each search
                         )
                     {
-                        string button = "";
-                        if (listing.QuerySelector("button").HasAttribute("data-oneclick"))
-                        {
-                            button = listing.QuerySelector("button").GetAttribute("data-href");
-                            var options2 = new ChromeOptions();
-                            options2.AddArgument("--headless");
-                            options2.AddArgument("--incognito");
-                            options2.AddArgument("--ignore-certificate-errors");
-                            var chromeDriver2 = new ChromeDriver(options);
-                            chromeDriver2.Url = button;
-                            var html2 = chromeDriver2.PageSource;
-                            var parser2 = new HtmlParser();
-                            var doc2 = parser.Parse(html2);
-                            Console.Write(doc2.Context);
-                            Console.WriteLine("Applied to: " + title);
-
-
-                        }
-                        else
-                        {
-                            Console.WriteLine(title);
-                        }
-                        
-                        
+                        var id = listing.QuerySelector("span.just_job_title").GetAttribute("data-job-id");
+                        Console.WriteLine("Id: " + id);
+                        Console.ReadLine();
                         //Job job = new Job();
                         //job.Title = title;
                         //job.Company = listing.QuerySelector(".t_org_link").TextContent;
@@ -130,13 +109,7 @@ namespace ZipApplier.ConsoleApp
 
 
                     }
-            }
-            
-                
-                // get URL
-                //XmlDocument xml = new XmlDocument();
-               
-
+                }
             }
 
         }
