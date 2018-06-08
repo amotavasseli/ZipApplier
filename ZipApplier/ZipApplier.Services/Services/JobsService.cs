@@ -94,5 +94,16 @@ namespace ZipApplier.Services.Services
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public void Delete(int id)
+        {
+            using(SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlWrapper().Wrapper("Jobs_delete", con);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

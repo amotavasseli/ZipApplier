@@ -52,6 +52,7 @@
     <Compile Include="Domains\Job.cs" />
     <Compile Include="Requests\JobRequest.cs" />
     <Compile Include="Interfaces\IZipScraperService.cs" />
+    <Compile Include="Requests\JobUpdateRequest.cs" />
     <Compile Include="Services\IJobsService.cs" />
     <Compile Include="Services\JobsService.cs" />
     <Compile Include="Services\ZipScraperService.cs" />

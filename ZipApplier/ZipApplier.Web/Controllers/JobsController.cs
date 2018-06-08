@@ -55,5 +55,14 @@ namespace ZipApplier.Web.Controllers
             jobsService.Update(req);
             return Request.CreateResponse(HttpStatusCode.OK, "Updated");
         }
+
+        [HttpDelete, Route("api/jobs/{id}")]
+        public HttpResponseMessage Delete(int id)
+        {
+            if(!ModelState.IsValid)
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            jobsService.Delete(id);
+            return Request.CreateResponse(HttpStatusCode.OK, "Deleted");
+        }
     }
 }

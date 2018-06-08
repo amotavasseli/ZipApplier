@@ -9,5 +9,6 @@ namespace ZipApplier.Services.Services
         List<Job> GetAllJobs();
         Job GetById(int id);
         void Update(JobUpdateRequest req);
+        void Delete(int id);
     }
 }
