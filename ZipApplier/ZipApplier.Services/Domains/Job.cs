@@ -1,27 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZipApplier.Services.Requests
+namespace ZipApplier.Services.Domains
 {
     public class Job
     {
-        [Required]
+        public int Id { get; set; }
         public string JobId { get; set; }
-        [Required]
         public string Title { get; set; }
-        [Required]
         public string Url { get; set; }
-        [Required]
         public string Company { get; set; }
         public string Description { get; set; }
-        [Required]
         public string Location { get; set; }
-        public string PostDate { get; set; }
-        [Required]
+        public DateTime? DateApplied { get; set; }
+        public bool Archived { get; set; }
         public bool QuickApply { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
     }
 }

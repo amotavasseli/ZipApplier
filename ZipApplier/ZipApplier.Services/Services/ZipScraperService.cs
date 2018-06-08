@@ -15,16 +15,16 @@ namespace ZipApplier.Services.Services
     {
         string connectionString = ConfigurationManager.ConnectionStrings["ZipApplierConnection"].ConnectionString;
 
-        public List<Job> PostScrapedJobs()
+        public List<JobRequest> PostScrapedJobs()
         {
-            List<Job> jobs = new ZipScraper().Scrape();
+            List<JobRequest> jobs = new ZipScraper().Scrape();
             using(SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
 
                 for(int i = 0; i < jobs.Count; i++)
                 {
-                    Job job = jobs[i];
+                    JobRequest job = jobs[i];
                     try
                     {
                         //Post new job into the database

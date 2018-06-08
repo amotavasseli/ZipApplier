@@ -45,6 +45,7 @@ namespace ZipApplier.Web
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IZipScraperService, ZipScraperService>();
+            container.RegisterType<IJobsService, JobsService>();
         }
     }
 }

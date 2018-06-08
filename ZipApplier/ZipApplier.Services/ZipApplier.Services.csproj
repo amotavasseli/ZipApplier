@@ -49,16 +49,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Requests\Job.cs" />
+    <Compile Include="Domains\Job.cs" />
+    <Compile Include="Requests\JobRequest.cs" />
     <Compile Include="Interfaces\IZipScraperService.cs" />
+    <Compile Include="Services\IJobsService.cs" />
+    <Compile Include="Services\JobsService.cs" />
     <Compile Include="Services\ZipScraperService.cs" />
     <Compile Include="SqlWrapper.cs" />
     <Compile Include="ZipScraper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Domains\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

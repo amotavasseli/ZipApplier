@@ -5,6 +5,6 @@ namespace ZipApplier.Services.Interfaces
 {
     public interface IZipScraperService
     {
-        List<Job> PostScrapedJobs();
+        List<JobRequest> PostScrapedJobs();
     }
 }

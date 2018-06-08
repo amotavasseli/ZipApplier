@@ -13,7 +13,7 @@ namespace ZipApplier.Services
 {
     public class ZipScraper
     {
-        public List<Job> Scrape()
+        public List<JobRequest> Scrape()
         {
             string url = "https://www.ziprecruiter.com/candidate/search?search=.Net+Developer&location=Los+Angeles%2C+CA&days=10&radius=25&refine_by_salary=&refine_by_tags=&refine_by_title=&refine_by_org_name=";
 
@@ -27,7 +27,7 @@ namespace ZipApplier.Services
             var parser = new HtmlParser();
             var doc = parser.Parse(html);
 
-            List<Job> jobs = new List<Job>();
+            List<JobRequest> jobs = new List<JobRequest>();
             captureListings(doc);
 
             //Below finds the total number of listings returned by the search.
@@ -100,7 +100,7 @@ namespace ZipApplier.Services
                     {
                         var id = listing.QuerySelector("span.just_job_title").GetAttribute("data-job-id");
 
-                        Job job = new Job();
+                        JobRequest job = new JobRequest();
                         job.JobId = id;
                         job.Title = title;
                         job.Company = listing.QuerySelector(".t_org_link").TextContent;

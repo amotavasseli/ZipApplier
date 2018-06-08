@@ -5,8 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using ZipApplier.Services.Domains;
 using ZipApplier.Services.Interfaces;
 using ZipApplier.Services.Requests;
+using ZipApplier.Services.Services;
 
 namespace ZipApplier.Web.Controllers
 {
@@ -14,16 +16,29 @@ namespace ZipApplier.Web.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class JobsController : ApiController
     {
-        readonly IZipScraperService zipService; 
-        public JobsController(IZipScraperService zipService)
+        readonly IZipScraperService zipService;
+        readonly IJobsService jobsService;
+        public JobsController(IZipScraperService zipService, IJobsService jobsService)
         {
             this.zipService = zipService;
+            this.jobsService = jobsService;
         }
 
         [HttpPost, Route("api/zipscraper")]
         public HttpResponseMessage PostScrapedJobs()
         {
-            List<Job> jobs = zipService.PostScrapedJobs();
+            if (!ModelState.IsValid)
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            List<JobRequest> jobs = zipService.PostScrapedJobs();
+            return Request.CreateResponse(HttpStatusCode.OK, jobs);
+        }
+
+        [HttpGet, Route("api/jobs")]
+        public HttpResponseMessage GetAll()
+        {
+            if (!ModelState.IsValid)
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            List<Job> jobs = jobsService.GetAllJobs();
             return Request.CreateResponse(HttpStatusCode.OK, jobs);
         }
     }
