@@ -36,10 +36,15 @@ namespace ZipApplier.Web.Controllers
         [HttpGet, Route("api/jobs")]
         public HttpResponseMessage GetAll()
         {
-            if (!ModelState.IsValid)
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             List<Job> jobs = jobsService.GetAllJobs();
             return Request.CreateResponse(HttpStatusCode.OK, jobs);
+        }
+
+        [HttpGet, Route("api/jobs/{id}")]
+        public HttpResponseMessage GetById(int id)
+        {
+            Job job = jobsService.GetById(id);
+            return Request.CreateResponse(HttpStatusCode.OK, job);
         }
     }
 }
