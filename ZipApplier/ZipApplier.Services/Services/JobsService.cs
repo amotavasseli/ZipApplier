@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZipApplier.Services.Domains;
+using ZipApplier.Services.Requests;
 
 namespace ZipApplier.Services.Services
 {
@@ -71,6 +72,26 @@ namespace ZipApplier.Services.Services
                     job.DateModified = reader.GetDateTime(11);
                     return job;
                 }
+            }
+        }
+
+        public void Update(JobUpdateRequest req)
+        {
+            using(SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlWrapper().Wrapper("Jobs_update", con);
+                cmd.Parameters.AddWithValue("@id", req.Id);
+                cmd.Parameters.AddWithValue("@job_id", req.JobId);
+                cmd.Parameters.AddWithValue("@title", req.Title);
+                cmd.Parameters.AddWithValue("@url", req.Url);
+                cmd.Parameters.AddWithValue("@company", req.Company);
+                cmd.Parameters.AddWithValue("@description", req.Description);
+                cmd.Parameters.AddWithValue("@location", req.Location);
+                cmd.Parameters.AddWithValue("@date_applied", req.DateApplied);
+                cmd.Parameters.AddWithValue("@archived", req.Archived);
+                cmd.Parameters.AddWithValue("@quick_apply", req.QuickApply);
+                cmd.ExecuteNonQuery();
             }
         }
     }

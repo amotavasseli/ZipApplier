@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ZipApplier.Services.Domains;
+using ZipApplier.Services.Requests;
 
 namespace ZipApplier.Services.Services
 {
@@ -7,5 +8,6 @@ namespace ZipApplier.Services.Services
     {
         List<Job> GetAllJobs();
         Job GetById(int id);
+        void Update(JobUpdateRequest req);
     }
 }

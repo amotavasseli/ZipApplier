@@ -46,5 +46,14 @@ namespace ZipApplier.Web.Controllers
             Job job = jobsService.GetById(id);
             return Request.CreateResponse(HttpStatusCode.OK, job);
         }
+
+        [HttpPut, Route("api/jobs/{id}")]
+        public HttpResponseMessage Update(JobUpdateRequest req)
+        {
+            if (!ModelState.IsValid)
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            jobsService.Update(req);
+            return Request.CreateResponse(HttpStatusCode.OK, "Updated");
+        }
     }
 }
